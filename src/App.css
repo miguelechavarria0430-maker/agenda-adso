@@ -1,0 +1,79 @@
+:root {
+  --morado: #7c3aed;
+  --morado-oscuro: #5b21b6;
+  --gris: #374151;
+  --borde: #d1d5db;
+  --error: #dc2626;
+  --radio: 10px;
+  --shadow: 0 1px 4px rgba(0,0,0,.08);
+}
+
+body{
+  background:#f8fafc;
+  font-family:Arial,sans-serif;
+  margin:0;
+  color:var(--gris);
+}
+
+.app-container{
+  max-width:700px;
+  margin:2rem auto;
+  padding:1rem;
+}
+
+.app-title{
+  text-align:center;
+  color:var(--morado);
+}
+
+.subtitulo{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.form-contacto{
+  background:#fff;
+  padding:16px;
+  border:1px solid var(--borde);
+  border-radius:var(--radio);
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+input{
+  padding:10px;
+  border:1px solid var(--borde);
+  border-radius:8px;
+}
+
+.btn-primario{
+  background:var(--morado);
+  color:#fff;
+  border:0;
+  padding:10px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.tarjeta-contacto{
+  background:#fff;
+  border:1px solid var(--borde);
+  border-radius:10px;
+  padding:15px;
+  margin-top:12px;
+}
+
+.acciones{
+  display:flex;
+  justify-content:flex-end;
+}
+
+.btn-eliminar{
+  background:var(--error);
+  color:#fff;
+  border:0;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+}
