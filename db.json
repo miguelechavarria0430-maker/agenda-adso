@@ -1,4 +1,47 @@
 {
-  "contactos": [],
+  "contactos": [
+    {
+      "nombre": "miguel ",
+      "telefono": "32343349883",
+      "correo": "miguel@gmail",
+      "etiqueta": "",
+      "id": "3kRP4Yzva4k"
+    },
+    {
+      "nombre": "samantha ",
+      "telefono": "311123234",
+      "correo": "samantha@gmail",
+      "etiqueta": "",
+      "id": "b-BAT5Y8RbA"
+    },
+    {
+      "nombre": "busca",
+      "telefono": "23233433",
+      "correo": "wddwdd@wdw",
+      "etiqueta": "",
+      "id": "SuTG_H6Ue_Y"
+    },
+    {
+      "nombre": "busca ejemolo",
+      "telefono": "323332",
+      "correo": "buscaetiqueta@gmail",
+      "etiqueta": "pruebaetiqueta",
+      "id": "PGCz4Mw7nqQ"
+    },
+    {
+      "nombre": "ABEJA",
+      "telefono": "323233443",
+      "correo": "abeja@gmail",
+      "etiqueta": "",
+      "id": "xKbBnW-f55E"
+    },
+    {
+      "nombre": "ZORRO",
+      "telefono": "4332234",
+      "correo": "zorro@gmail",
+      "etiqueta": "",
+      "id": "4EWG-pfjXoY"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }

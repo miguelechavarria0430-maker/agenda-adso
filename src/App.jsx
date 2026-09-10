@@ -11,6 +11,24 @@ import {
 export default function App() {
   const [contactos, setContactos] = useState([]);
   const [error, setError] = useState("");
+  const [busqueda, setBusqueda] = useState("");
+  const [orden, setOrden] = useState("A-Z");
+
+  const contactosFiltrados = contactos.filter((contacto) => {
+    const texto = busqueda.toLowerCase().trim();
+
+    return (
+      contacto.nombre.toLowerCase().includes(texto) ||
+      contacto.correo.toLowerCase().includes(texto) ||
+      contacto.etiqueta.toLowerCase().includes(texto)
+    );
+  });
+
+  const contactosOrdenados = [...contactosFiltrados].sort((a, b) => {
+    const comparacion = a.nombre.localeCompare(b.nombre);
+
+    return orden === "A-Z" ? comparacion : -comparacion;
+  });
 
   useEffect(() => {
     const cargarContactos = async () => {
@@ -90,15 +108,40 @@ export default function App() {
           <FormularioContacto onAgregar={agregarContacto} />
         </section>
 
-        <section className="space-y-4">
-          {contactos.map((contacto) => (
-            <ContactoCard
-              key={contacto.id || contacto.correo}
-              {...contacto}
-              onEliminar={eliminarContactoPorCorreo}
-            />
-          ))}
+        <section className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 mb-6">
+          <input
+            type="text"
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+            placeholder="Buscar por nombre, correo o etiqueta..."
+            className="w-full border border-gray-300 rounded-lg px-4 py-3"
+          />
+
+          <select
+            value={orden}
+            onChange={(e) => setOrden(e.target.value)}
+            className="mt-3 w-full border border-gray-300 rounded-lg px-4 py-3"
+          >
+            <option value="A-Z">A-Z</option>
+            <option value="Z-A">Z-A</option>
+          </select>
         </section>
+
+      <section className="space-y-4">
+  {contactosOrdenados.length === 0 ? (
+    <p className="text-center text-gray-500 py-4">
+      No se encontraron contactos.
+    </p>
+  ) : (
+    contactosOrdenados.map((contacto) => (
+      <ContactoCard
+        key={contacto.id || contacto.correo}
+        {...contacto}
+        onEliminar={eliminarContactoPorCorreo}
+      />
+    ))
+  )}
+</section>
 
       </div>
     </main>
