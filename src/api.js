@@ -35,3 +35,19 @@ export const eliminarContacto = async (id) => {
     throw new Error("Error al eliminar el contacto");
   }
 };
+
+export const actualizarContacto = async (id, data) => {
+  const respuesta = await fetch(`${API_BASE_URL}/contactos/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!respuesta.ok) {
+    throw new Error("No se pudo actualizar el contacto");
+  }
+
+  return respuesta.json();
+};

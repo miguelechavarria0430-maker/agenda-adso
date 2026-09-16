@@ -1,7 +1,11 @@
+import { useEffect, useState } from "react";
 
-import { useState } from "react";
-
-export default function FormularioContacto({ onAgregar }) {
+export default function FormularioContacto({
+  onAgregar,
+  contactoEnEdicion,
+  onGuardarEdicion,
+  onCancelarEdicion,
+}) {
   const [form, setForm] = useState({
     nombre: "",
     telefono: "",
@@ -16,6 +20,23 @@ export default function FormularioContacto({ onAgregar }) {
   });
 
   const [enviando, setEnviando] = useState(false);
+
+  useEffect(() => {
+    if (contactoEnEdicion) {
+      setForm({
+        nombre: contactoEnEdicion.nombre || "",
+        telefono: contactoEnEdicion.telefono || "",
+        correo: contactoEnEdicion.correo || "",
+        etiqueta: contactoEnEdicion.etiqueta || "",
+      });
+
+      setErrores({
+        nombre: "",
+        telefono: "",
+        correo: "",
+      });
+    }
+  }, [contactoEnEdicion]);
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -56,6 +77,21 @@ export default function FormularioContacto({ onAgregar }) {
     );
   }
 
+  const limpiarFormulario = () => {
+    setForm({
+      nombre: "",
+      telefono: "",
+      correo: "",
+      etiqueta: "",
+    });
+
+    setErrores({
+      nombre: "",
+      telefono: "",
+      correo: "",
+    });
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -66,32 +102,27 @@ export default function FormularioContacto({ onAgregar }) {
     try {
       setEnviando(true);
 
-      // Mantener el estado "Guardando..." visible durante 2 segundos
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      await onAgregar(form);
-
-      setForm({
-        nombre: "",
-        telefono: "",
-        correo: "",
-        etiqueta: "",
-      });
-
-      setErrores({
-        nombre: "",
-        telefono: "",
-        correo: "",
-      });
+      if (contactoEnEdicion) {
+        await onGuardarEdicion(form);
+      } else {
+        await onAgregar(form);
+        limpiarFormulario();
+      }
     } finally {
       setEnviando(false);
     }
   };
 
+  const cancelarEdicion = () => {
+    limpiarFormulario();
+    onCancelarEdicion();
+  };
+
   return (
     <form onSubmit={onSubmit} className="space-y-4">
 
-      {/* NOMBRE */}
       <div>
         <label className="block text-sm font-medium text-gray-700">
           Nombre *
@@ -112,7 +143,6 @@ export default function FormularioContacto({ onAgregar }) {
         )}
       </div>
 
-      {/* TELÉFONO */}
       <div>
         <label className="block text-sm font-medium text-gray-700">
           Teléfono *
@@ -133,7 +163,6 @@ export default function FormularioContacto({ onAgregar }) {
         )}
       </div>
 
-      {/* CORREO */}
       <div>
         <label className="block text-sm font-medium text-gray-700">
           Correo *
@@ -154,7 +183,6 @@ export default function FormularioContacto({ onAgregar }) {
         )}
       </div>
 
-      {/* ETIQUETA */}
       <div>
         <label className="block text-sm font-medium text-gray-700">
           Etiqueta
@@ -169,16 +197,34 @@ export default function FormularioContacto({ onAgregar }) {
         />
       </div>
 
-      {/* BOTÓN */}
-      <button
-        type="submit"
-        disabled={enviando}
-        className="w-full md:w-auto bg-purple-600 hover:bg-purple-700
-        disabled:bg-purple-300 disabled:cursor-not-allowed
-        text-white px-6 py-3 rounded-xl font-semibold shadow-sm"
-      >
-        {enviando ? "Guardando..." : "Agregar contacto"}
-      </button>
+      <div className="flex flex-col md:flex-row gap-3">
+
+        <button
+          type="submit"
+          disabled={enviando}
+          className="w-full md:w-auto bg-purple-600 hover:bg-purple-700
+          disabled:bg-purple-300 disabled:cursor-not-allowed
+          text-white px-6 py-3 rounded-xl font-semibold shadow-sm"
+        >
+          {enviando
+            ? "Guardando..."
+            : contactoEnEdicion
+            ? "Guardar cambios"
+            : "Agregar contacto"}
+        </button>
+
+        {contactoEnEdicion && (
+          <button
+            type="button"
+            onClick={cancelarEdicion}
+            className="w-full md:w-auto bg-gray-500 hover:bg-gray-600
+            text-white px-6 py-3 rounded-xl font-semibold shadow-sm"
+          >
+            Cancelar edición
+          </button>
+        )}
+
+      </div>
 
     </form>
   );

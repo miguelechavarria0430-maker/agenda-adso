@@ -6,6 +6,7 @@ import {
   obtenerContactos,
   crearContacto,
   eliminarContacto,
+  actualizarContacto,
 } from "./api";
 
 export default function App() {
@@ -13,6 +14,7 @@ export default function App() {
   const [error, setError] = useState("");
   const [busqueda, setBusqueda] = useState("");
   const [orden, setOrden] = useState("A-Z");
+  const [contactoEnEdicion, setContactoEnEdicion] = useState(null);
 
   const contactosFiltrados = contactos.filter((contacto) => {
     const texto = busqueda.toLowerCase().trim();
@@ -64,6 +66,42 @@ export default function App() {
     }
   };
 
+  const iniciarEdicion = (contacto) => {
+    setError("");
+    setContactoEnEdicion(contacto);
+  };
+
+  const cancelarEdicion = () => {
+    setContactoEnEdicion(null);
+  };
+
+  const guardarEdicion = async (datosActualizados) => {
+    try {
+      setError("");
+
+      const actualizado = await actualizarContacto(
+        contactoEnEdicion.id,
+        datosActualizados
+      );
+
+      setContactos((prev) =>
+        prev.map((contacto) =>
+          contacto.id === actualizado.id ? actualizado : contacto
+        )
+      );
+
+      setContactoEnEdicion(null);
+    } catch (error) {
+      console.error("Error al actualizar contacto:", error);
+
+      setError(
+        "No se pudo actualizar el contacto. Verifica el estado del servidor e intenta nuevamente."
+      );
+
+      throw error;
+    }
+  };
+
   const eliminarContactoPorCorreo = async (correo) => {
     try {
       setError("");
@@ -95,7 +133,6 @@ export default function App() {
       </h1>
 
       <div className="max-w-4xl mx-auto">
-
         {error && (
           <div className="mb-4 rounded-xl bg-red-50 border border-red-200 px-4 py-3">
             <p className="text-sm font-medium text-red-700">
@@ -105,7 +142,12 @@ export default function App() {
         )}
 
         <section className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 mb-6">
-          <FormularioContacto onAgregar={agregarContacto} />
+          <FormularioContacto
+            onAgregar={agregarContacto}
+            contactoEnEdicion={contactoEnEdicion}
+            onGuardarEdicion={guardarEdicion}
+            onCancelarEdicion={cancelarEdicion}
+          />
         </section>
 
         <section className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 mb-6">
@@ -127,22 +169,22 @@ export default function App() {
           </select>
         </section>
 
-      <section className="space-y-4">
-  {contactosOrdenados.length === 0 ? (
-    <p className="text-center text-gray-500 py-4">
-      No se encontraron contactos.
-    </p>
-  ) : (
-    contactosOrdenados.map((contacto) => (
-      <ContactoCard
-        key={contacto.id || contacto.correo}
-        {...contacto}
-        onEliminar={eliminarContactoPorCorreo}
-      />
-    ))
-  )}
-</section>
-
+        <section className="space-y-4">
+          {contactosOrdenados.length === 0 ? (
+            <p className="text-center text-gray-500 py-4">
+              No se encontraron contactos.
+            </p>
+          ) : (
+            contactosOrdenados.map((contacto) => (
+              <ContactoCard
+                key={contacto.id || contacto.correo}
+                {...contacto}
+                onEditar={iniciarEdicion}
+                onEliminar={eliminarContactoPorCorreo}
+              />
+            ))
+          )}
+        </section>
       </div>
     </main>
   );

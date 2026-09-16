@@ -1,28 +1,14 @@
 {
   "contactos": [
     {
-      "nombre": "miguel ",
+      "nombre": "migueleditado",
       "telefono": "32343349883",
       "correo": "miguel@gmail",
       "etiqueta": "",
       "id": "3kRP4Yzva4k"
     },
     {
-      "nombre": "samantha ",
-      "telefono": "311123234",
-      "correo": "samantha@gmail",
-      "etiqueta": "",
-      "id": "b-BAT5Y8RbA"
-    },
-    {
-      "nombre": "busca",
-      "telefono": "23233433",
-      "correo": "wddwdd@wdw",
-      "etiqueta": "",
-      "id": "SuTG_H6Ue_Y"
-    },
-    {
-      "nombre": "busca ejemolo",
+      "nombre": "busca cambios ",
       "telefono": "323332",
       "correo": "buscaetiqueta@gmail",
       "etiqueta": "pruebaetiqueta",
